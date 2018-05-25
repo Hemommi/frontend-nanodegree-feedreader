@@ -33,7 +33,7 @@ $(function() {
          */
         it('object has URL and that URL is defined', function(){
             var i;
-            for(var i = 0; i < allFeeds.length; i++){
+            for(i = 0; allFeeds.length > i; i++){
                 expect(allFeeds[i].url).toBeDefined();
                 expect(allFeeds[i].url.length).not.toBe(0);
             };
@@ -45,7 +45,7 @@ $(function() {
          */
         it('object has name and that name is defined', function(){
             var j;
-            for(var j = 0; j < allFeeds.length; j++){
+            for(j = 0; allFeeds.length > j; j++){
                 expect(allFeeds[j].name).toBeDefined();
                 expect(allFeeds[j].name.length).not.toBe();
             };
@@ -60,6 +60,7 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+            /* .hasClass() method */
             it('the menu element is hidden', function(){
                 expect($('body').hasClass('menu-hidden')).toBe(true);
             });
@@ -70,9 +71,11 @@ $(function() {
           */
             it('menu changes visibility when the menu icon is clicked', function(){
                 $('.menu-icon-link').on('click', function(){
+                    /* .hasClass() method */
                     expect($('body').hasClass('menu-hidden')).toBe(false);
                     });
                 $('.menu-icon-link').on('click', function(){
+                    /* .hasClass() method */
                     expect($('body').hasClass('menu-hidden')).toBe(true);
                 });
             });
@@ -92,7 +95,7 @@ $(function() {
                 });
             });
             it('at least single entry within the feed container', function(){
-                expect($('.entry, .feed')).toBeDefined();
+                expect($('.feed .entry')).toBeDefined();
             });
         });
         
@@ -103,13 +106,22 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-            afterEach(function(done){
+           var firstEntry;
+           var nextEntry;
+           beforeEach(function(done){
                 loadFeed(0, function(){
+                    firstEntry = $('.feed').load('allFeeds[id].url');
+                    done();
+                });
+            });
+            beforeEach(function(done){
+                loadFeed(0, function(){
+                    nextEntry = $('.feed').load('allFeeds[id].url');
                     done();
                 });
             });
             it('when a new feed is loaded', function(){
-                expect($('.feed')).toBeDefined();
+                expect(firstEntry).not.toBe(nextEntry);
             });
         });
         
