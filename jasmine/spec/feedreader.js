@@ -47,7 +47,7 @@ $(function() {
             var j;
             for(j = 0; allFeeds.length > j; j++){
                 expect(allFeeds[j].name).toBeDefined();
-                expect(allFeeds[j].name.length).not.toBe();
+                expect(allFeeds[j].name.length).not.toBe(0);
             };
         });
     });
@@ -68,14 +68,12 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
             it('menu changes visibility when the menu icon is clicked', function(){
-                $('.menu-icon-link').on('click', function(){
+                $('.menu-icon-link').click();
                     /* .hasClass() method */
-                    expect($('body').hasClass('menu-hidden')).toBe(false);
-                    });
-                $('.menu-icon-link').on('click', function(){
+                expect($('body').hasClass('menu-hidden')).toBe(false);
+                $('.menu-icon-link').click();
                     /* .hasClass() method */
-                    expect($('body').hasClass('menu-hidden')).toBe(true);
-                });
+                expect($('body').hasClass('menu-hidden')).toBe(true);
             });
         });
     
@@ -105,16 +103,18 @@ $(function() {
          * LoadFeed() is asynchronous.
          */
         /* Nested Calbacks */
-           var firstEntry;
-           var nextEntry;
+           var firstEntry = "first";
+           var nextEntry = "second";
            beforeEach(function(done){
                 loadFeed(0, function(){
-                    firstEntry = $('.feed').load('allFeeds[id].url');
-                    done();
-                });
-                loadFeed(1, function(){
-                    nextEntry = $('.feed').load('allFeeds[id].url');
-                    done();
+                    setTimeout(function(){
+                        firstEntry = $('.feed').html();
+                        
+                        loadFeed(1, function(){
+                            nextEntry = $('.feed').html();
+                            done();                  
+                         });
+                    },2000); 
                 });
             });
             it('when a new feed is loaded', function(){
